@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ouro da Canastra · Proposta de site</title>
+</head>
+<body>
+<style>
+  /* ============ TOKENS ============ */
+  :root {
+    --bg: #f6efdf;
+    --surface: #fdfaf2;
+    --ink: #241a10;
+    --ink-2: #5c4f3d;
+    --muted: #75664f;
+    --line: #e6dcc4;
+    --accent: #b97c10;
+    --accent-deep: #8f5e08;
+    --accent-soft: #f0e2c0;
+    --shadow: 0 18px 50px rgba(36, 26, 16, 0.14);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14100b;
+      --surface: #1f1913;
+      --ink: #f3e8d2;
+      --ink-2: #cdbfa4;
+      --muted: #9c8c72;
+      --line: #352b20;
+      --accent: #e3b04b;
+      --accent-deep: #c08a1f;
+      --accent-soft: #3a2e1c;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14100b;
+    --surface: #1f1913;
+    --ink: #f3e8d2;
+    --ink-2: #cdbfa4;
+    --muted: #9c8c72;
+    --line: #352b20;
+    --accent: #e3b04b;
+    --accent-deep: #c08a1f;
+    --accent-soft: #3a2e1c;
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  }
+  :root[data-theme="light"] {
+    --bg: #f6efdf;
+    --surface: #fdfaf2;
+    --ink: #241a10;
+    --ink-2: #5c4f3d;
+    --muted: #75664f;
+    --line: #e6dcc4;
+    --accent: #b97c10;
+    --accent-deep: #8f5e08;
+    --accent-soft: #f0e2c0;
+    --shadow: 0 18px 50px rgba(36, 26, 16, 0.14);
+  }
+
+  /* ============ BASE ============ */
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    line-height: 1.15;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p { margin: 0; }
+  a { color: var(--accent-deep); }
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  .narrow { max-width: 720px; }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+  }
+  .sec { padding: 88px 0; }
+  .sec-title { font-size: clamp(28px, 4vw, 40px); margin-top: 10px; }
+  .sec-lede { color: var(--ink-2); max-width: 62ch; margin-top: 18px; font-size: 18px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* reveal animation (só com JS ativo; sem JS ou na impressão, tudo visível) */
+  .rv { transition: opacity 0.7s ease, transform 0.7s ease; }
+  .js .rv { opacity: 0; transform: translateY(18px); }
+  .js .rv.on { opacity: 1; transform: none; }
+  @media print {
+    @page { size: 1240px 1754px; margin: 0; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .rv, .js .rv { opacity: 1 !important; transform: none !important; }
+    .selo-big { animation: none !important; }
+    .divider { break-before: page; }
+    .browser, .phone, .duo, .caps, .steps3, .grid-3, .tl, .note, .facts, .clube { break-inside: avoid; }
+    .frame-scroll { overflow-x: visible; }
+    .sec { padding: 56px 0; }
+    .cover { background: #241c14; }
+    .cover::after { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rv, .js .rv { opacity: 1; transform: none; transition: none; }
+    .selo-big { animation: none !important; }
+  }
+
+  /* ============ CAPA (mundo fixo: porão de cura) ============ */
+  .cover {
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #372a1c 0%, #1d1712 58%),
+      #1d1712;
+    color: #f3e8d2;
+    text-align: center;
+    padding: 96px 24px 110px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(243, 232, 210, 0.025) 0 2px,
+      transparent 2px 140px
+    );
+    pointer-events: none;
+  }
+  .cover .eyebrow { color: #c9a04a; }
+  .cover h1 {
+    font-size: clamp(44px, 8vw, 88px);
+    letter-spacing: 0.01em;
+    margin-top: 26px;
+    color: #f6ecd6;
+  }
+  .cover .sub {
+    max-width: 56ch;
+    margin: 22px auto 0;
+    font-size: 19px;
+    color: #d8c9a8;
+  }
+  .cover .meta {
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 10px; margin-top: 34px;
+  }
+  .cover .meta span {
+    font-size: 13px; letter-spacing: 0.06em;
+    border: 1px solid rgba(243, 232, 210, 0.25);
+    border-radius: 999px;
+    padding: 7px 16px;
+    color: #cbbd9e;
+  }
+  .selo-big { width: 168px; height: 168px; margin: 0 auto; display: block; }
+  @keyframes stampIn {
+    0% { opacity: 0; transform: scale(1.5) rotate(-14deg); }
+    60% { opacity: 1; transform: scale(0.96) rotate(1deg); }
+    100% { opacity: 1; transform: scale(1) rotate(-4deg); }
+  }
+  .selo-big { animation: stampIn 0.9s cubic-bezier(0.2, 0.8, 0.3, 1) both; transform: rotate(-4deg); }
+
+  /* ============ DIVISÓRIAS ESCURAS ============ */
+  .divider {
+    background: linear-gradient(180deg, #241c14, #1d1712);
+    color: #f3e8d2;
+    padding: 54px 24px;
+    border-top: 1px solid rgba(201, 160, 74, 0.3);
+    border-bottom: 1px solid rgba(201, 160, 74, 0.3);
+  }
+  .divider .d-head { display: flex; align-items: baseline; gap: 22px; flex-wrap: wrap; }
+  .divider .num {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    font-size: 54px;
+    color: #c9a04a;
+    line-height: 1;
+  }
+  .divider h2 { font-size: clamp(24px, 3.4vw, 34px); color: #f6ecd6; }
+  .divider p { margin-top: 12px; color: #cbbd9e; max-width: 65ch; }
+
+  /* ============ CARDS DE RESUMO ============ */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 44px; }
+  @media (max-width: 860px) { .grid-3 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .card .ic { width: 40px; height: 40px; margin-bottom: 16px; }
+  .card h3 { font-size: 21px; margin-bottom: 10px; }
+  .card p { color: var(--ink-2); font-size: 16px; }
+  .card .tag {
+    display: inline-block; margin-bottom: 14px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent-deep);
+    background: var(--accent-soft);
+    border-radius: 999px; padding: 4px 12px;
+  }
+
+  .facts {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    margin-top: 40px; padding-top: 34px; border-top: 1px solid var(--line);
+  }
+  @media (max-width: 860px) { .facts { grid-template-columns: repeat(2, 1fr); } }
+  .facts b {
+    display: block;
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    font-size: 32px; font-weight: 700; color: var(--ink);
+  }
+  .facts span { font-size: 14px; color: var(--muted); }
+
+  .note {
+    margin-top: 40px;
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 22px;
+    color: var(--ink-2);
+    font-size: 15.5px;
+    max-width: 65ch;
+  }
+
+  /* ============ MOLDURAS ============ */
+  .frame-scroll { overflow-x: auto; margin-top: 46px; padding-bottom: 8px; }
+  .browser {
+    min-width: 780px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .browser-bar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 18px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); display: block; }
+  .urlbar {
+    flex: 1; max-width: 420px; margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 12.5px; color: var(--muted);
+    padding: 5px 18px; text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ============ MOCKUP LOJA (tema fixo claro, tokens locais --m-*) ============ */
+  .store {
+    --m-bg: #fdfaf2;
+    --m-ink: #241a10;
+    --m-ink2: #5c4f3d;
+    --m-muted: #75664f;
+    --m-line: #eee3c9;
+    --m-gold: #b97c10;
+    --m-gold-deep: #8f5e08;
+    --m-cream: #f6efdf;
+    background: var(--m-bg);
+    color: var(--m-ink);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .store .topbar {
+    background: #241a10; color: #f0e4c8;
+    text-align: center; font-size: 11.5px; letter-spacing: 0.04em;
+    padding: 7px 16px;
+  }
+  .store .hd {
+    display: flex; align-items: center; gap: 26px;
+    padding: 16px 30px;
+    border-bottom: 1px solid var(--m-line);
+    background: var(--m-bg);
+  }
+  .store .brand {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    font-weight: 700; font-size: 17px; letter-spacing: 0.04em;
+    color: var(--m-ink); white-space: nowrap;
+  }
+  .store .brand em { font-style: normal; color: var(--m-gold-deep); }
+  .store nav { display: flex; gap: 20px; flex: 1; font-size: 13px; color: var(--m-ink2); }
+  .store nav b { color: var(--m-ink); font-weight: 600; }
+  .store .hd-icons { display: flex; gap: 16px; align-items: center; }
+  .store .bag { position: relative; }
+  .store .bag i {
+    position: absolute; top: -7px; right: -9px;
+    background: var(--m-gold-deep); color: #fff;
+    font-style: normal; font-size: 9.5px; font-weight: 700;
+    width: 16px; height: 16px; border-radius: 50%;
+    display: grid; place-items: center;
+  }
+
+  .store .hero {
+    display: grid; grid-template-columns: 1.15fr 0.85fr;
+    gap: 30px; align-items: center;
+    padding: 44px 48px;
+    background: linear-gradient(180deg, var(--m-cream), var(--m-bg));
+  }
+  .store .hero .eb {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--m-gold-deep);
+  }
+  .store .hero h3 {
+    font-size: 31px; line-height: 1.12; margin: 12px 0 14px;
+  }
+  .store .hero p { color: var(--m-ink2); max-width: 44ch; }
+  .store .cta-row { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+  .store .btn {
+    display: inline-block;
+    background: var(--m-gold-deep); color: #fff;
+    font-weight: 700; font-size: 13px;
+    padding: 11px 22px; border-radius: 8px;
+  }
+  .store .btn.ghost {
+    background: transparent; color: var(--m-ink);
+    border: 1.5px solid var(--m-ink);
+  }
+  .store .trust {
+    display: flex; gap: 18px; margin-top: 22px;
+    font-size: 12px; color: var(--m-muted); flex-wrap: wrap;
+  }
+  .store .trust span { display: flex; align-items: center; gap: 6px; }
+  .store .hero-art { display: grid; place-items: center; }
+
+  .store .shelf-title {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 34px 48px 0;
+  }
+  .store .shelf-title h4 {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    font-size: 21px; margin: 0;
+  }
+  .store .shelf-title a { font-size: 12.5px; color: var(--m-gold-deep); font-weight: 600; text-decoration: none; }
+  .store .cards {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 18px; padding: 20px 48px 44px;
+  }
+  .store .pcard {
+    background: #fff;
+    border: 1px solid var(--m-line);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+  .store .pcard .ph {
+    background: var(--m-cream);
+    display: grid; place-items: center;
+    height: 128px;
+  }
+  .store .pcard .badge {
+    position: absolute; top: 10px; left: 10px;
+    background: #241a10; color: #f0e4c8;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 999px;
+  }
+  .store .pcard .badge.gold { background: var(--m-gold-deep); color: #fff; }
+  .store .pcard .badge.red { background: #d03b3b; color: #fff; }
+  .store .pcard .in { padding: 13px 14px 15px; }
+  .store .pcard .cat { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--m-muted); }
+  .store .pcard h5 { margin: 5px 0 2px; font-size: 13.5px; line-height: 1.3; font-weight: 700; }
+  .store .pcard .wt { font-size: 11.5px; color: var(--m-muted); }
+  .store .pcard .pr { margin-top: 9px; font-size: 15px; font-weight: 700; }
+  .store .pcard .pr s { color: var(--m-muted); font-weight: 400; font-size: 12px; margin-right: 6px; }
+  .store .pcard .pix { font-size: 11.5px; color: var(--m-gold-deep); font-weight: 600; margin-top: 1px; }
+  .store .pcard .add {
+    margin-top: 11px; display: block; text-align: center;
+    border: 1.5px solid var(--m-gold); color: var(--m-gold-deep);
+    font-weight: 700; font-size: 12px;
+    border-radius: 7px; padding: 8px 0;
+  }
+  .store .cats {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    padding: 0 48px 40px;
+  }
+  .store .cats span {
+    font-size: 12px; color: var(--m-ink2);
+    border: 1px solid var(--m-line); background: #fff;
+    border-radius: 999px; padding: 7px 15px;
+  }
+  .store .ft {
+    border-top: 1px solid var(--m-line);
+    background: var(--m-cream);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    padding: 18px 48px; font-size: 11.5px; color: var(--m-muted);
+  }
+
+  /* ============ LEGENDAS DOS MOCKUPS ============ */
+  .caps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 26px; }
+  @media (max-width: 860px) { .caps { grid-template-columns: 1fr; } }
+  .cap {
+    border-top: 3px solid var(--accent);
+    background: var(--surface);
+    border-radius: 0 0 12px 12px;
+    padding: 16px 18px;
+    font-size: 14.5px; color: var(--ink-2);
+  }
+  .cap b { color: var(--ink); display: block; margin-bottom: 4px; font-size: 14.5px; }
+
+  /* ============ CELULAR ============ */
+  .duo { display: grid; grid-template-columns: 320px 1fr; gap: 44px; align-items: center; margin-top: 70px; }
+  @media (max-width: 860px) { .duo { grid-template-columns: 1fr; } }
+  .phone {
+    width: min(300px, 100%); margin: 0 auto;
+    background: #241a10;
+    border-radius: 38px;
+    padding: 12px;
+    box-shadow: var(--shadow);
+  }
+  .phone .scr {
+    background: #fdfaf2; color: #241a10;
+    border-radius: 28px; overflow: hidden;
+    font-size: 12.5px; line-height: 1.45;
+  }
+  .phone .notch { height: 22px; display: grid; place-items: center; }
+  .phone .notch i { width: 74px; height: 7px; border-radius: 999px; background: #e6dcc4; display: block; }
+  .phone .p-ph { background: #f6efdf; display: grid; place-items: center; height: 158px; }
+  .phone .p-in { padding: 15px 17px 18px; }
+  .phone .p-cat { font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #75664f; }
+  .phone .p-in h5 { font-size: 16.5px; margin: 4px 0 2px; font-weight: 800; }
+  .phone .p-wt { font-size: 11px; color: #75664f; }
+  .phone .p-pr { font-size: 19px; font-weight: 800; margin-top: 9px; }
+  .phone .p-pix { font-size: 11.5px; color: #8f5e08; font-weight: 700; }
+  .phone .chips { display: flex; gap: 6px; margin-top: 12px; }
+  .phone .chips span {
+    font-size: 10.5px; border: 1px solid #e6dcc4; border-radius: 999px;
+    padding: 5px 10px; color: #5c4f3d;
+  }
+  .phone .chips .sel { background: #241a10; color: #f0e4c8; border-color: #241a10; font-weight: 700; }
+  .phone .acc {
+    border-top: 1px solid #eee3c9; margin-top: 13px; padding-top: 10px;
+    font-size: 11px; color: #5c4f3d;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .phone .p-btn {
+    margin-top: 13px; background: #8f5e08; color: #fff;
+    text-align: center; font-weight: 800; font-size: 13px;
+    border-radius: 9px; padding: 11px 0;
+  }
+  .phone .p-wa {
+    margin-top: 8px; border: 1.5px solid #1faa59; color: #116b3b;
+    text-align: center; font-weight: 700; font-size: 12px;
+    border-radius: 9px; padding: 9px 0;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+  }
+  .side-caps .cap { border-radius: 12px; border-top: none; border-left: 3px solid var(--accent); margin-bottom: 14px; }
+
+  /* ============ CHECKOUT STRIP ============ */
+  .steps3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 70px; }
+  @media (max-width: 860px) { .steps3 { grid-template-columns: 1fr; } }
+  .step3 {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; padding: 22px 24px;
+  }
+  .step3 .k {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    color: var(--accent-deep); font-size: 15px; font-weight: 700;
+  }
+  .step3 h4 { margin: 8px 0 6px; font-size: 17px; font-weight: 700; }
+  .step3 p { font-size: 14.5px; color: var(--ink-2); }
+
+  /* ============ MOCKUP ADMIN (tema fixo claro) ============ */
+  .adm {
+    --m-bg: #f8f4e8;
+    --m-panel: #fdfaf2;
+    --m-ink: #241a10;
+    --m-ink2: #5c4f3d;
+    --m-muted: #75664f;
+    --m-line: #eae0c6;
+    --m-gold: #b97c10;
+    --m-gold-deep: #8f5e08;
+    display: grid; grid-template-columns: 190px 1fr;
+    background: var(--m-bg); color: var(--m-ink);
+    font-size: 13px; line-height: 1.45;
+    min-height: 620px;
+  }
+  .adm aside {
+    background: #241a10; color: #cbbd9e;
+    padding: 20px 0;
+  }
+  .adm aside .lg {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    color: #f0e4c8; font-size: 13.5px; font-weight: 700; letter-spacing: 0.04em;
+    padding: 4px 20px 16px;
+  }
+  .adm aside a {
+    display: flex; align-items: center; gap: 10px;
+    color: #cbbd9e; text-decoration: none;
+    font-size: 12.5px; padding: 9px 20px;
+  }
+  .adm aside a.on {
+    color: #f6ecd6; background: rgba(227, 176, 75, 0.14);
+    border-left: 3px solid #e3b04b; padding-left: 17px; font-weight: 700;
+  }
+  .adm .main { padding: 24px 28px 30px; }
+  .adm .a-hd { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; }
+  .adm .a-hd .h4 {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    font-weight: 700;
+    font-size: 19px;
+  }
+  .adm .a-hd time { font-size: 12px; color: var(--m-muted); }
+
+  .adm .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 18px; }
+  .adm .tile {
+    background: var(--m-panel); border: 1px solid var(--m-line);
+    border-radius: 11px; padding: 14px 16px;
+  }
+  .adm .tile .lb { font-size: 11.5px; color: var(--m-muted); }
+  .adm .tile .vl { font-size: 24px; font-weight: 700; margin-top: 3px; }
+  .adm .tile .dt { font-size: 11.5px; margin-top: 3px; font-weight: 600; }
+  .adm .tile .dt.up { color: #006300; }
+  .adm .tile.alert { border-color: #ecc9c9; background: #fdf6f2; }
+  .adm .tile.alert .vl { color: #b02a2a; }
+  .adm .tile.alert .dt { color: #b02a2a; }
+
+  .adm .panel {
+    background: var(--m-panel); border: 1px solid var(--m-line);
+    border-radius: 12px; padding: 18px 20px; margin-top: 16px;
+  }
+  .adm .panel .p-hd { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .adm .panel .p-hd .h5 { font-size: 14px; font-weight: 800; }
+  .adm .panel .p-hd span { font-size: 11.5px; color: var(--m-muted); }
+
+  /* gráfico de colunas: série única dourada */
+  .chart { position: relative; height: 190px; margin-top: 26px; }
+  .cgrid { position: absolute; inset: 0 0 22px 0; }
+  .cgrid .gl {
+    position: absolute; left: 44px; right: 0; height: 1px;
+    background: #e7ddc3;
+  }
+  .cgrid .gl b {
+    position: absolute; left: -44px; top: -7px; width: 38px; text-align: right;
+    font-size: 10px; font-weight: 400; color: #75664f;
+    font-variant-numeric: tabular-nums;
+  }
+  .cgrid .gl.base { background: #cbbd9e; }
+  .cbars {
+    position: absolute; inset: 0 0 22px 44px;
+    display: flex; align-items: flex-end; justify-content: space-around;
+  }
+  .cb { position: relative; width: 22px; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+  .cb .bar {
+    width: 22px; background: #b97c10;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+  }
+  .cb .xl {
+    position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; color: #75664f; white-space: nowrap;
+  }
+  .cb .vl2 {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    font-size: 10.5px; font-weight: 700; color: #241a10;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .cb .tip {
+    position: absolute; left: 50%; bottom: calc(100% + 2px); transform: translateX(-50%);
+    background: #241a10; color: #f6ecd6;
+    font-size: 10.5px; white-space: nowrap;
+    border-radius: 6px; padding: 4px 9px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.15s ease;
+    z-index: 2;
+  }
+  .cb:hover .tip, .cb:focus-visible .tip { opacity: 1; }
+  .cb:hover .bar, .cb:focus-visible .bar { background: #8f5e08; }
+  .cb:hover .vl2, .cb:focus-visible .vl2 { opacity: 0; }
+  .cb:last-child .tip { left: auto; right: -6px; transform: none; }
+
+  .adm .two { display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px; }
+  .adm table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .adm th {
+    text-align: left; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--m-muted); font-weight: 700;
+    padding: 7px 8px; border-bottom: 1px solid var(--m-line);
+  }
+  .adm td {
+    padding: 8px; font-size: 12.5px;
+    border-bottom: 1px solid #f2ead4;
+  }
+  .adm td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  .adm th.n { text-align: right; }
+  .adm .st { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; color: var(--m-ink2); white-space: nowrap; }
+  .adm .st i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .adm .st.ok i { background: #0ca30c; }
+  .adm .st.wr i { background: #c98500; }
+  .adm .st.cr i { background: #d03b3b; }
+  .adm .st.cr { color: #b02a2a; }
+  .adm .more { font-size: 11.5px; color: var(--m-gold-deep); font-weight: 700; margin-top: 10px; display: inline-block; }
+
+  .adm .ord { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f2ead4; align-items: center; }
+  .adm .ord:last-of-type { border-bottom: none; }
+  .adm .ord .who { font-size: 12.5px; font-weight: 600; }
+  .adm .ord .sub2 { font-size: 11px; color: var(--m-muted); }
+  .adm .ord .vlr { font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .adm .chip {
+    font-size: 10.5px; font-weight: 700; border-radius: 999px; padding: 3px 10px; white-space: nowrap;
+  }
+  .adm .chip.pix { background: #e3f2e3; color: #006300; }
+  .adm .chip.rota { background: #f0e2c0; color: #7a4f06; }
+  .adm .chip.done { background: #eee9db; color: #5c4f3d; }
+  .adm .chip.wait { background: #fdf0d3; color: #8a5c00; }
+
+  /* ============ FASE 2 ============ */
+  .clube {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; padding: 24px 26px; margin-top: 18px;
+  }
+  .clube .c-hd { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; }
+  .clube .c-hd b { font-size: 16px; }
+  .clube .c-hd span { font-size: 13px; color: var(--muted); }
+  .meter {
+    height: 12px; border-radius: 999px;
+    background: var(--accent-soft);
+    margin-top: 14px; overflow: hidden;
+  }
+  .meter i { display: block; height: 100%; width: 70%; background: var(--accent); border-radius: 999px; }
+  .clube .c-ft { margin-top: 10px; font-size: 14px; color: var(--ink-2); }
+
+  /* ============ PRÓXIMOS PASSOS ============ */
+  .tl { margin-top: 44px; display: grid; gap: 0; }
+  .tl-item {
+    display: grid; grid-template-columns: 64px 1fr; gap: 22px;
+    padding: 22px 0; border-top: 1px solid var(--line);
+  }
+  .tl-item:last-child { border-bottom: 1px solid var(--line); }
+  .tl-item .n {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    font-size: 34px; color: var(--accent); line-height: 1;
+  }
+  .tl-item h4 { margin: 0 0 5px; font-size: 18px; font-weight: 700; }
+  .tl-item p { color: var(--ink-2); font-size: 15.5px; max-width: 66ch; }
+
+  /* ============ RODAPÉ ============ */
+  .footer {
+    background: #1d1712; color: #cbbd9e;
+    padding: 64px 24px 56px;
+    text-align: center;
+  }
+  .footer .fb {
+    font-family: "Rockwell", "Rockwell Nova", "Roboto Slab", Georgia, serif;
+    color: #f6ecd6; font-size: 22px;
+  }
+  .footer p { font-size: 14px; margin-top: 12px; }
+  .footer .dis { font-size: 12.5px; color: #8f8168; margin-top: 26px; max-width: 65ch; margin-left: auto; margin-right: auto; }
+
+  /* overrides de impressão no fim do CSS: o Chromium avalia media queries de print
+     contra o papel padrão (A4), então as grades colapsariam para 1 coluna sem isto */
+  @media print {
+    .grid-3, .steps3, .caps { grid-template-columns: repeat(3, 1fr); }
+    .facts { grid-template-columns: repeat(4, 1fr); }
+    .duo { grid-template-columns: 320px 1fr; }
+  }
+</style>
+
+<!-- ================= CAPA ================= -->
+<header class="cover">
+  <svg class="selo-big" viewBox="0 0 200 200" role="img" aria-label="Selo circular da queijaria Ouro da Canastra">
+    <defs>
+      <path id="arcT" d="M 100,100 m -74,0 a 74,74 0 1,1 148,0" />
+      <path id="arcB" d="M 100,100 m -74,0 a 74,74 0 1,0 148,0" />
+    </defs>
+    <circle cx="100" cy="100" r="96" fill="none" stroke="#c9a04a" stroke-width="2.5" />
+    <circle cx="100" cy="100" r="88" fill="none" stroke="#c9a04a" stroke-width="1" opacity="0.6" />
+    <circle cx="100" cy="100" r="58" fill="none" stroke="#c9a04a" stroke-width="1.5" />
+    <text fill="#e6cd94" font-size="12.5" font-weight="700" letter-spacing="3.5" font-family="Georgia, serif">
+      <textPath href="#arcT" startOffset="50%" text-anchor="middle">QUEIJARIA ARTESANAL</textPath>
+    </text>
+    <text fill="#e6cd94" font-size="12.5" font-weight="700" letter-spacing="3.5" font-family="Georgia, serif">
+      <textPath href="#arcB" startOffset="50%" text-anchor="middle">DE MINAS PARA O ES</textPath>
+    </text>
+    <text x="100" y="92" text-anchor="middle" fill="#f6ecd6" font-size="26" font-weight="700" font-family="Rockwell, Georgia, serif" letter-spacing="1">OURO</text>
+    <text x="100" y="112" text-anchor="middle" fill="#e6cd94" font-size="11" font-weight="700" font-family="Rockwell, Georgia, serif" letter-spacing="2">DA CANASTRA</text>
+    <circle cx="66" cy="126" r="2.2" fill="#c9a04a" />
+    <circle cx="134" cy="126" r="2.2" fill="#c9a04a" />
+  </svg>
+
+  <p class="eyebrow" style="margin-top:34px;">Proposta de site</p>
+  <h1>Ouro da Canastra</h1>
+  <p class="sub">Do produtor, direto pra sua mesa. Esta proposta mostra, tela por tela, como fica o novo site da queijaria: a loja que o cliente vê, o painel que o dono controla e o plano para vender mais.</p>
+  <div class="meta">
+    <span>Julho de 2026</span>
+    <span>Feita sobre a loja atual e o Instagram @ouro_canastravix</span>
+    <span>Produtos e preços reais</span>
+  </div>
+</header>
+
+<main>
+  <!-- ================= RESUMO ================= -->
+  <section class="sec">
+    <div class="wrap">
+      <p class="eyebrow rv">O que esta proposta entrega</p>
+      <h2 class="sec-title rv">Três peças que trabalham juntas</h2>
+      <p class="sec-lede rv">A loja de hoje já vende bem no básico: Pix com 5% de desconto, cartão em até 12x e entrega própria na Grande Vitória. O site novo mantém tudo isso e soma o que falta: identidade própria, controle do negócio e fidelização.</p>
+
+      <div class="grid-3">
+        <div class="card rv">
+          <span class="tag">Fase 1</span>
+          <h3>A loja que o cliente vê</h3>
+          <p>Vitrine com a cara da marca, preço no Pix já calculado em cada produto, entrega local em destaque e compra fácil pelo celular.</p>
+        </div>
+        <div class="card rv">
+          <span class="tag">Fase 1</span>
+          <h3>O painel do dono</h3>
+          <p>Estoque, pedidos e vendas em uma tela só. O aviso de última peça chega antes para o dono, não só depois para o cliente.</p>
+        </div>
+        <div class="card rv">
+          <span class="tag">Fase 2</span>
+          <h3>O plano para vender mais</h3>
+          <p>Conta do cliente, brinde para quem mais compra e cupom de primeira compra para transformar seguidor do Instagram em cliente.</p>
+        </div>
+      </div>
+
+      <div class="facts rv">
+        <div><b>54</b><span>produtos na loja atual</span></div>
+        <div><b>13</b><span>categorias, do queijo ao café</span></div>
+        <div><b>5%</b><span>de desconto no Pix</span></div>
+        <div><b>5</b><span>cidades com entrega própria</span></div>
+      </div>
+
+      <p class="note rv">Tudo nesta página é uma simulação do site novo. Os produtos, preços e condições de pagamento vêm da loja atual. Os números de venda e estoque do painel são ilustrativos, só para mostrar as telas funcionando.</p>
+    </div>
+  </section>
+
+  <!-- ================= 01 LOJA ================= -->
+  <div class="divider" id="cliente">
+    <div class="wrap">
+      <div class="d-head"><span class="num">01</span>
+      <h2>A loja que o cliente vê</h2></div>
+      <p>Primeira impressão de queijaria de verdade. O cliente entende em segundos o que a loja vende, quanto custa no Pix e que a entrega chega na cidade dele.</p>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="frame-scroll rv">
+        <div class="browser" role="img" aria-label="Simulação da página inicial da loja Ouro da Canastra no computador">
+          <div class="browser-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="urlbar">ourodacanastra.com.br</span>
+          </div>
+          <div class="store">
+            <div class="topbar">Entrega própria em Serra, Vitória, Vila Velha, Cariacica e Viana &nbsp;·&nbsp; Pix com 5% de desconto</div>
+            <div class="hd">
+              <span class="brand">OURO <em>da</em> CANASTRA</span>
+              <nav aria-hidden="true"><b>Queijos</b><span>Doces</span><span>Geleias e antepastos</span><span>Kits</span><span>Nossa história</span></nav>
+              <div class="hd-icons" aria-hidden="true">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#241a10" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <span class="bag">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#241a10" stroke-width="2"><path d="M6 7h12l1 13H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+                  <i>2</i>
+                </span>
+              </div>
+            </div>
+
+            <div class="hero">
+              <div>
+                <p class="eb">Queijaria artesanal</p>
+                <h3>Queijo Canastra de verdade, de Minas pra sua mesa.</h3>
+                <p>Peças selecionadas na Serra da Canastra e entregues na sua casa na Grande Vitória. Doces, geleias e antepastos para acompanhar.</p>
+                <div class="cta-row">
+                  <span class="btn">Ver queijos</span>
+                  <span class="btn ghost">Montar meu kit</span>
+                </div>
+                <div class="trust" aria-hidden="true">
+                  <span><svg width="13" height="13" viewBox="0 0 24 24" fill="#8f5e08"><path d="M12 2 2 12l10 10 10-10L12 2zm0 5 5 5-5 5-5-5 5-5z"/></svg> Pix com 5% off</span>
+                  <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8f5e08" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> Cartão em até 12x</span>
+                  <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8f5e08" stroke-width="2"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="1.8"/><circle cx="17" cy="17" r="1.8"/></svg> Entrega própria</span>
+                </div>
+              </div>
+              <div class="hero-art" aria-hidden="true">
+                <svg width="250" height="190" viewBox="0 0 250 190">
+                  <defs>
+                    <linearGradient id="rind" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#e8b95c"/><stop offset="1" stop-color="#c1841c"/>
+                    </linearGradient>
+                    <linearGradient id="paste" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#faeeC9"/><stop offset="1" stop-color="#f3dfa4"/>
+                    </linearGradient>
+                  </defs>
+                  <rect x="10" y="150" width="230" height="14" rx="3" fill="#8a6b45"/>
+                  <rect x="10" y="164" width="230" height="6" rx="2" fill="#6e5335"/>
+                  <ellipse cx="105" cy="110" rx="78" ry="26" fill="#a87012" fill-opacity="0.5"/>
+                  <path d="M27 68 a78 26 0 0 1 156 0 l0 42 a78 26 0 0 1 -156 0 z" fill="url(#rind)"/>
+                  <ellipse cx="105" cy="68" rx="78" ry="26" fill="url(#paste)"/>
+                  <ellipse cx="105" cy="68" rx="78" ry="26" fill="none" stroke="#c1841c" stroke-width="2"/>
+                  <text x="105" y="73" text-anchor="middle" font-size="11" font-weight="700" fill="#a06a10" font-family="Georgia, serif" letter-spacing="2">CANASTRA</text>
+                  <path d="M170 132 l46 -14 l14 24 l-42 18 a60 20 0 0 1 -18 -28 z" fill="url(#rind)"/>
+                  <path d="M170 132 l46 -14 l4 7 l-46 15 z" fill="url(#paste)"/>
+                  <circle cx="205" cy="146" r="2.5" fill="#e0c37e"/>
+                  <circle cx="216" cy="139" r="2" fill="#e0c37e"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="shelf-title">
+              <h4>Os queridinhos da casa</h4>
+              <a href="#" tabindex="-1" aria-hidden="true">Ver todos os 54 produtos</a>
+            </div>
+            <div class="cards">
+              <div class="pcard">
+                <span class="badge gold">Mais vendido</span>
+                <div class="ph" aria-hidden="true">
+                  <svg width="96" height="76" viewBox="0 0 96 76">
+                    <path d="M12 30 a36 13 0 0 1 72 0 l0 22 a36 13 0 0 1 -72 0 z" fill="#d99e33"/>
+                    <ellipse cx="48" cy="30" rx="36" ry="13" fill="#f6e4ae"/>
+                    <ellipse cx="48" cy="30" rx="36" ry="13" fill="none" stroke="#c1841c" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <div class="in">
+                  <span class="cat">Queijaria gourmet</span>
+                  <h5>Queijo Minas Canastra</h5>
+                  <span class="wt">Peça de 0,6 a 0,7 kg</span>
+                  <div class="pr">R$ 45,00</div>
+                  <div class="pix">R$ 42,75 no Pix</div>
+                  <span class="add">Adicionar à sacola</span>
+                </div>
+              </div>
+              <div class="pcard">
+                <div class="ph" aria-hidden="true">
+                  <svg width="96" height="76" viewBox="0 0 96 76">
+                    <path d="M14 34 a34 12 0 0 1 68 0 l0 20 a34 12 0 0 1 -68 0 z" fill="#e3b25a"/>
+                    <ellipse cx="48" cy="34" rx="34" ry="12" fill="#f8ecc4"/>
+                    <path d="M48 34 L82 34 A34 12 0 0 0 60 23 z" fill="#f0d791"/>
+                    <ellipse cx="48" cy="34" rx="34" ry="12" fill="none" stroke="#c1841c" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <div class="in">
+                  <span class="cat">Queijaria gourmet</span>
+                  <h5>Minas padrão OURO</h5>
+                  <span class="wt">Peça de 0,6 kg</span>
+                  <div class="pr">R$ 47,00</div>
+                  <div class="pix">R$ 44,65 no Pix</div>
+                  <span class="add">Adicionar à sacola</span>
+                </div>
+              </div>
+              <div class="pcard">
+                <span class="badge red">Última peça</span>
+                <div class="ph" aria-hidden="true">
+                  <svg width="96" height="76" viewBox="0 0 96 76">
+                    <path d="M48 8 C60 8 66 18 64 30 C74 34 76 48 68 56 C60 66 36 66 28 56 C20 48 22 34 32 30 C30 18 36 8 48 8 z" fill="#d99e33"/>
+                    <path d="M42 8 h12 v6 h-12 z" fill="#8a6b45"/>
+                    <path d="M30 34 q18 8 36 0" stroke="#b97c10" stroke-width="1.5" fill="none"/>
+                  </svg>
+                </div>
+                <div class="in">
+                  <span class="cat">Queijaria gourmet</span>
+                  <h5>Provolone defumado</h5>
+                  <span class="wt">Peça de 0,65 kg</span>
+                  <div class="pr">R$ 42,00</div>
+                  <div class="pix">R$ 39,90 no Pix</div>
+                  <span class="add">Adicionar à sacola</span>
+                </div>
+              </div>
+              <div class="pcard">
+                <span class="badge">5% OFF</span>
+                <div class="ph" aria-hidden="true">
+                  <svg width="96" height="76" viewBox="0 0 96 76">
+                    <path d="M8 36 a22 8 0 0 1 44 0 l0 14 a22 8 0 0 1 -44 0 z" fill="#e3b25a"/>
+                    <ellipse cx="30" cy="36" rx="22" ry="8" fill="#f8ecc4"/>
+                    <path d="M50 44 l30 -10 l9 15 l-27 12 a38 14 0 0 1 -12 -17 z" fill="#d99e33"/>
+                    <path d="M50 44 l30 -10 l3 5 l-30 10 z" fill="#f6e4ae"/>
+                    <circle cx="70" cy="30" r="9" fill="#c1841c"/>
+                    <circle cx="70" cy="30" r="6" fill="#f0d791"/>
+                  </svg>
+                </div>
+                <div class="in">
+                  <span class="cat">Combos e kits</span>
+                  <h5>Kit 4 Queijos Treta</h5>
+                  <span class="wt">0,55 a 0,65 kg</span>
+                  <div class="pr"><s>R$ 45,00</s>R$ 42,75</div>
+                  <div class="pix">R$ 40,61 no Pix</div>
+                  <span class="add">Adicionar à sacola</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="cats" aria-hidden="true">
+              <span>Queijos (12)</span><span>Doces (9)</span><span>Geleias e antepastos (11)</span><span>Conservas (6)</span><span>Kits (5)</span><span>Café e bebidas (7)</span><span>e mais 7 categorias</span>
+            </div>
+
+            <div class="ft">
+              <span>WhatsApp (37) 99818-4544</span>
+              <span>@ouro_canastravix</span>
+              <span>Pix · Cartão em até 12x · Boleto</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="caps">
+        <div class="cap rv"><b>Entrega local como argumento de venda</b>A faixa do topo mostra as cinco cidades atendidas antes de qualquer produto. Quem é da Grande Vitória se reconhece na hora.</div>
+        <div class="cap rv"><b>Preço no Pix em todo produto</b>O desconto de 5% aparece já na vitrine, calculado. O cliente vê o preço final antes mesmo de fechar o pedido.</div>
+        <div class="cap rv"><b>Imagens de estudo</b>As ilustrações desta simulação marcam o lugar das fotos. No site final entram fotos reais das peças, feitas em uma tarde.</div>
+      </div>
+
+      <div class="duo">
+        <div class="rv">
+          <div class="phone" role="img" aria-label="Simulação da página de produto no celular">
+            <div class="scr">
+              <div class="notch"><i></i></div>
+              <div class="p-ph" aria-hidden="true">
+                <svg width="150" height="110" viewBox="0 0 150 110">
+                  <defs>
+                    <linearGradient id="rind2" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#e8b95c"/><stop offset="1" stop-color="#c1841c"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M20 42 a55 19 0 0 1 110 0 l0 30 a55 19 0 0 1 -110 0 z" fill="url(#rind2)"/>
+                  <ellipse cx="75" cy="42" rx="55" ry="19" fill="#f6e4ae"/>
+                  <ellipse cx="75" cy="42" rx="55" ry="19" fill="none" stroke="#c1841c" stroke-width="1.5"/>
+                  <text x="75" y="46" text-anchor="middle" font-size="8.5" font-weight="700" fill="#a06a10" font-family="Georgia, serif" letter-spacing="1.5">CANASTRA</text>
+                </svg>
+              </div>
+              <div class="p-in">
+                <span class="p-cat">Queijaria gourmet</span>
+                <h5>Queijo Minas Canastra</h5>
+                <span class="p-wt">Peça inteira, de 0,6 a 0,7 kg. O peso varia porque cada peça é artesanal.</span>
+                <div class="p-pr">R$ 45,00</div>
+                <div class="p-pix">R$ 42,75 no Pix ou em até 12x no cartão</div>
+                <div class="chips" aria-hidden="true">
+                  <span>Fresco</span><span class="sel">Meia cura</span><span>Curado</span>
+                </div>
+                <div class="acc"><span>Como conservar a peça</span><b>+</b></div>
+                <div class="acc"><span>Calcular frete por CEP</span><b>+</b></div>
+                <div class="p-btn">Adicionar à sacola</div>
+                <div class="p-wa">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="#116b3b" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5 13.4c-.3.8-1.5 1.4-2.1 1.4-.5.1-1.2.1-2-.2-2.6-1-4.3-3.4-4.4-3.6-.1-.2-1-1.4-1-2.7s.7-1.9.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.7 1.7.7 1.8c.1.1.1.3 0 .4-.1.2-.1.3-.3.5l-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1l1.8.8c.2.1.4.2.4.3.1.1.1.5-.2 1.3z"/></svg>
+                  Tirar dúvida no WhatsApp
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="side-caps">
+          <p class="eyebrow rv">A compra no celular</p>
+          <h3 class="rv" style="font-size:26px; margin:10px 0 22px;">O Instagram traz, o site fecha</h3>
+          <div class="cap rv"><b>Peso declarado por faixa</b>Cada peça artesanal pesa diferente. A página avisa isso antes, e as dúvidas no WhatsApp diminuem.</div>
+          <div class="cap rv"><b>Ponto de cura na compra</b>Fresco, meia cura ou curado. O cliente escolhe como gosta, sem precisar perguntar.</div>
+          <div class="cap rv"><b>WhatsApp sempre à mão</b>O botão acompanha a página inteira. Quem prefere fechar a compra conversando continua conseguindo.</div>
+        </div>
+      </div>
+
+      <div class="steps3">
+        <div class="step3 rv">
+          <span class="k">Sacola</span>
+          <h4>Fechar pedido em três toques</h4>
+          <p>Sacola simples, com o mínimo de campos. Endereço preenchido pelo CEP.</p>
+        </div>
+        <div class="step3 rv">
+          <span class="k">Pagamento</span>
+          <h4>Pix com 5% off ou cartão em até 12x</h4>
+          <p>As mesmas condições que a loja já oferece hoje, apresentadas com clareza na hora de pagar.</p>
+        </div>
+        <div class="step3 rv">
+          <span class="k">Entrega</span>
+          <h4>Própria na Grande Vitória</h4>
+          <p>Serra, Vitória, Vila Velha, Cariacica e Viana com entrega própria. Nas demais regiões, envio pelos Correios com frete calculado por CEP.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 02 ADMIN ================= -->
+  <div class="divider" id="dono">
+    <div class="wrap">
+      <div class="d-head"><span class="num">02</span>
+      <h2>O painel do dono</h2></div>
+      <p>Hoje o aviso de última peça aparece para o cliente, na vitrine. No painel, ele chega primeiro para quem precisa repor: o dono. Vendas, pedidos e estoque em uma tela, no celular ou no computador.</p>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="frame-scroll rv">
+        <div class="browser" style="min-width: 900px;">
+          <div class="browser-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="urlbar">ourodacanastra.com.br/painel</span>
+          </div>
+          <div class="adm">
+            <aside aria-hidden="true">
+              <div class="lg">OURO da CANASTRA</div>
+              <a class="on" href="#" tabindex="-1">Visão geral</a>
+              <a href="#" tabindex="-1">Pedidos</a>
+              <a href="#" tabindex="-1">Produtos</a>
+              <a href="#" tabindex="-1">Estoque</a>
+              <a href="#" tabindex="-1">Clientes</a>
+              <a href="#" tabindex="-1">Relatórios</a>
+            </aside>
+            <div class="main">
+              <div class="a-hd">
+                <div class="h4">Visão geral</div>
+                <time>Segunda-feira, 13 de julho de 2026</time>
+              </div>
+
+              <div class="tiles">
+                <div class="tile">
+                  <div class="lb">Vendas nos últimos 30 dias</div>
+                  <div class="vl">R$ 3.980</div>
+                  <div class="dt up">+14% vs período anterior</div>
+                </div>
+                <div class="tile">
+                  <div class="lb">Pedidos nos últimos 30 dias</div>
+                  <div class="vl">58</div>
+                  <div class="dt up">+9 vs período anterior</div>
+                </div>
+                <div class="tile">
+                  <div class="lb">Ticket médio</div>
+                  <div class="vl">R$ 68,60</div>
+                  <div class="dt up">+R$ 4,10 vs período anterior</div>
+                </div>
+                <div class="tile alert">
+                  <div class="lb">Estoque baixo</div>
+                  <div class="vl">3 itens</div>
+                  <div class="dt">Repor esta semana</div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <div class="p-hd">
+                  <div class="h5">Vendas por semana</div>
+                  <span>Últimas 8 semanas, em reais</span>
+                </div>
+                <div class="chart">
+                  <div class="cgrid" aria-hidden="true">
+                    <div class="gl" style="top:0;"><b>1.200</b></div>
+                    <div class="gl" style="top:33.3%;"><b>800</b></div>
+                    <div class="gl" style="top:66.7%;"><b>400</b></div>
+                    <div class="gl base" style="top:100%;"><b>0</b></div>
+                  </div>
+                  <div class="cbars">
+                    <div class="cb" role="img" tabindex="0" aria-label="Semana de 18 de maio: R$ 720">
+                      <span class="tip">Semana de 18 mai · R$ 720</span>
+                      <span class="bar" style="height:60%;"></span>
+                      <span class="xl">18 mai</span>
+                    </div>
+                    <div class="cb" role="img" tabindex="0" aria-label="Semana de 25 de maio: R$ 810">
+                      <span class="tip">Semana de 25 mai · R$ 810</span>
+                      <span class="bar" style="height:67.5%;"></span>
+                      <span class="xl">25 mai</span>
+                    </div>
+                    <div class="cb" role="img" tabindex="0" aria-label="Semana de 1 de junho: R$ 640">
+                      <span class="tip">Semana de 1 jun · R$ 640</span>
+                      <span class="bar" style="height:53.3%;"></span>
+                      <span class="xl">1 jun</span>
+                    </div>
+                    <div class="cb" role="img" tabindex="0" aria-label="Semana de 8 de junho: R$ 930">
+                      <span class="tip">Semana de 8 jun · R$ 930</span>
+                      <span class="bar" style="height:77.5%;"></span>
+                      <span class="xl">8 jun</span>
+                    </div>
+                    <div class="cb" role="img" tabindex="0" aria-label="Semana de 15 de junho: R$ 880">
+                      <span class="tip">Semana de 15 jun · R$ 880</span>
+                      <span class="bar" style="height:73.3%;"></span>
+                      <span class="xl">15 jun</span>
+                    </div>
+                    <div class="cb" role="img" tabindex="0" aria-label="Semana de 22 de junho: R$ 1.040">
+                      <span class="tip">Semana de 22 jun · R$ 1.040</span>
+                      <span class="bar" style="height:86.7%;"></span>
+                      <span class="xl">22 jun</span>
+                    </div>
+                    <div class="cb" role="img" tabindex="0" aria-label="Semana de 29 de junho: R$ 970">
+                      <span class="tip">Semana de 29 jun · R$ 970</span>
+                      <span class="bar" style="height:80.8%;"></span>
+                      <span class="xl">29 jun</span>
+                    </div>
+                    <div class="cb" role="img" tabindex="0" aria-label="Semana de 6 de julho: R$ 1.180, melhor semana do período">
+                      <span class="tip">Semana de 6 jul · R$ 1.180</span>
+                      <span class="vl2" style="bottom: calc(98.3% + 6px);">R$ 1.180</span>
+                      <span class="bar" style="height:98.3%;"></span>
+                      <span class="xl">6 jul</span>
+                    </div>
+                  </div>
+                </div>
+                <table class="sr-only">
+                  <caption>Vendas por semana, últimas 8 semanas</caption>
+                  <thead><tr><th>Semana</th><th>Vendas</th></tr></thead>
+                  <tbody>
+                    <tr><td>18 de maio</td><td>R$ 720</td></tr>
+                    <tr><td>25 de maio</td><td>R$ 810</td></tr>
+                    <tr><td>1 de junho</td><td>R$ 640</td></tr>
+                    <tr><td>8 de junho</td><td>R$ 930</td></tr>
+                    <tr><td>15 de junho</td><td>R$ 880</td></tr>
+                    <tr><td>22 de junho</td><td>R$ 1.040</td></tr>
+                    <tr><td>29 de junho</td><td>R$ 970</td></tr>
+                    <tr><td>6 de julho</td><td>R$ 1.180</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="two">
+                <div class="panel">
+                  <div class="p-hd">
+                    <div class="h5">Estoque</div>
+                    <span>6 de 54 produtos</span>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr><th>Produto</th><th class="n">Preço</th><th class="n">Estoque</th><th>Situação</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Queijo Minas Canastra</td><td class="n">R$ 45,00</td><td class="n">12</td>
+                        <td><span class="st ok"><i></i>Em estoque</span></td>
+                      </tr>
+                      <tr>
+                        <td>Minas padrão OURO</td><td class="n">R$ 47,00</td><td class="n">4</td>
+                        <td><span class="st wr"><i></i>Baixo</span></td>
+                      </tr>
+                      <tr>
+                        <td>Provolone defumado</td><td class="n">R$ 42,00</td><td class="n">1</td>
+                        <td><span class="st cr"><i></i>Última peça</span></td>
+                      </tr>
+                      <tr>
+                        <td>Doce de leite</td><td class="n">R$ 25,00</td><td class="n">18</td>
+                        <td><span class="st ok"><i></i>Em estoque</span></td>
+                      </tr>
+                      <tr>
+                        <td>Geleia de pimenta defumada</td><td class="n">R$ 25,00</td><td class="n">2</td>
+                        <td><span class="st wr"><i></i>Baixo</span></td>
+                      </tr>
+                      <tr>
+                        <td>Kit 4 Queijos Treta</td><td class="n">R$ 42,75</td><td class="n">7</td>
+                        <td><span class="st ok"><i></i>Em estoque</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <span class="more">Ver os 54 produtos</span>
+                </div>
+
+                <div class="panel">
+                  <div class="p-hd">
+                    <div class="h5">Pedidos recentes</div>
+                    <span>Hoje e ontem</span>
+                  </div>
+                  <div class="ord">
+                    <div><div class="who">#1042 · Ana P., Vila Velha</div><div class="sub2">2 itens</div></div>
+                    <div style="text-align:right;"><div class="vlr">R$ 87,00</div><span class="chip pix">Pago no Pix</span></div>
+                  </div>
+                  <div class="ord">
+                    <div><div class="who">#1041 · Carlos M., Serra</div><div class="sub2">1 item</div></div>
+                    <div style="text-align:right;"><div class="vlr">R$ 45,00</div><span class="chip rota">Saiu para entrega</span></div>
+                  </div>
+                  <div class="ord">
+                    <div><div class="who">#1040 · Júlia R., Vitória</div><div class="sub2">4 itens</div></div>
+                    <div style="text-align:right;"><div class="vlr">R$ 129,90</div><span class="chip done">Entregue</span></div>
+                  </div>
+                  <div class="ord">
+                    <div><div class="who">#1039 · Roberto S., Cariacica</div><div class="sub2">2 itens</div></div>
+                    <div style="text-align:right;"><div class="vlr">R$ 70,00</div><span class="chip wait">Aguardando pagamento</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="caps">
+        <div class="cap rv"><b>Alerta antes de acabar</b>Com 4 peças ou menos, o produto entra na lista de reposição. O dono repõe antes de perder venda, em vez de descobrir pelo cliente.</div>
+        <div class="cap rv"><b>Venda semana a semana</b>O gráfico mostra, semana a semana, o efeito das campanhas e dos posts do Instagram no caixa. Fica claro o que funciona.</div>
+        <div class="cap rv"><b>Números ilustrativos</b>Os valores desta tela são de demonstração. Ao lançar, o painel passa a mostrar os dados reais da loja, atualizados sozinhos.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 03 FASE 2 ================= -->
+  <div class="divider" id="fase2">
+    <div class="wrap">
+      <div class="d-head"><span class="num">03</span>
+      <h2>Fase 2: transformar cliente em cliente fiel</h2></div>
+      <p>Queijo acaba, e isso é a maior vantagem do negócio: o bom cliente volta todo mês. A fase 2 usa o site para organizar essa volta e premiar quem mais compra.</p>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="grid-3">
+        <div class="card rv">
+          <h3>Conta do cliente</h3>
+          <p>Login simples por e-mail ou WhatsApp. Endereço salvo, histórico de pedidos e recompra do pedido anterior em um toque.</p>
+        </div>
+        <div class="card rv">
+          <h3>Clube do Ouro</h3>
+          <p>A cada 10 compras, uma peça de brinde. O painel mostra ao dono quem são os melhores clientes do mês, para mimar quem sustenta o negócio.</p>
+          <div class="clube">
+            <div class="c-hd"><b>Maria C.</b><span>Cliente desde março</span></div>
+            <div class="meter" role="img" aria-label="Progresso no Clube do Ouro: 7 de 10 compras"><i></i></div>
+            <p class="c-ft">7 de 10 compras. Faltam 3 para o brinde.</p>
+          </div>
+        </div>
+        <div class="card rv">
+          <h3>Cupom de boas-vindas</h3>
+          <p>Código BEMVINDO10 divulgado no Instagram. O seguidor vira cliente com desconto na primeira compra, e a loja passa a conhecer quem ele é.</p>
+        </div>
+      </div>
+      <p class="note rv">A fase 2 entra depois do lançamento, com o painel já medindo as vendas. Assim o brinde e o cupom são calibrados com número real, não com chute.</p>
+    </div>
+  </section>
+
+  <!-- ================= PRÓXIMOS PASSOS ================= -->
+  <section class="sec" style="padding-top: 20px;">
+    <div class="wrap">
+      <p class="eyebrow rv">Como a gente tira isso do papel</p>
+      <h2 class="sec-title rv">Quatro passos até o lançamento</h2>
+      <div class="tl">
+        <div class="tl-item rv">
+          <span class="n">1</span>
+          <div>
+            <h4>Aprovar a proposta</h4>
+            <p>Você escolhe o que entra na fase 1. O que ficar de fora não se perde: vira fila para a fase 2.</p>
+          </div>
+        </div>
+        <div class="tl-item rv">
+          <span class="n">2</span>
+          <div>
+            <h4>Fotografar as peças</h4>
+            <p>Uma tarde de fotos com luz natural resolve a vitrine inteira. As ilustrações desta proposta dão lugar às fotos reais.</p>
+          </div>
+        </div>
+        <div class="tl-item rv">
+          <span class="n">3</span>
+          <div>
+            <h4>Montar a loja e o painel</h4>
+            <p>Os 54 produtos, preços e condições migram da loja atual. Nada precisa ser recadastrado na mão.</p>
+          </div>
+        </div>
+        <div class="tl-item rv">
+          <span class="n">4</span>
+          <div>
+            <h4>Lançar e medir</h4>
+            <p>Divulgação no Instagram com o cupom de boas-vindas. Daí em diante, cada decisão sai do painel, com número na mão.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= RODAPÉ ================= -->
+<footer class="footer">
+  <p class="fb">Ouro da Canastra</p>
+  <p>Serra, ES · WhatsApp (37) 99818-4544 · @ouro_canastravix</p>
+  <p class="dis">Proposta montada em julho de 2026 a partir da loja atual na Nuvemshop e do Instagram da marca. Produtos, preços e condições de pagamento citados são os reais da loja. Números de vendas, pedidos e estoque das telas do painel são ilustrativos.</p>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var els = document.querySelectorAll(".rv");
+    if (reduce || !("IntersectionObserver" in window)) {
+      return;
+    }
+    document.documentElement.classList.add("js");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("on");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
